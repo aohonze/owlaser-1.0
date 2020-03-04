@@ -11,10 +11,18 @@
         mode="horizontal"
         active-text-color="#2980b9"
       >
-        <el-menu-item index="/">首 页</el-menu-item>
-        <el-menu-item index="/proInfo">项目介绍</el-menu-item>
-        <el-menu-item index="/teamStory">团队故事</el-menu-item>
-        <el-menu-item index="/contanct">联系我们</el-menu-item>
+        <el-menu-item index="/" @click="scrollTo('#banner')"
+          >首 页</el-menu-item
+        >
+        <el-menu-item index="proInfo" @click="scrollTo('#proInfo')"
+          >项目介绍</el-menu-item
+        >
+        <el-menu-item index="teamInfo" @click="scrollTo('#teamInfo')"
+          >团队故事</el-menu-item
+        >
+        <el-menu-item index="contact" @click="scrollTo('#contact')"
+          >联系我们</el-menu-item
+        >
         <el-button>登 录</el-button>
         <el-button>注 册</el-button>
       </el-menu>
@@ -23,7 +31,7 @@
 
     <!-- 主体部分开始 -->
     <el-main>
-      <div class="banner">
+      <div class="banner" id="#banner">
         <div class="center">
           <h1>OWLASER</h1>
           <p>OWLASER make your project more ....</p>
@@ -33,8 +41,20 @@
           </router-link>
         </div>
       </div>
-      <div class="pro-info" id="#proInfo">info</div>
-      <div class="team-ifo" id="3">team</div>
+      <div class="pro-info" id="#proInfo">
+        <h1>About The Project</h1>
+      </div>
+      <div class="team-info" id="#teamInfo">
+        <h1>About Our Team</h1>
+        <div class="pic-box">
+          <el-carousel :interval="4000" type="card" height="200px">
+            <el-carousel-item v-for="item in 6" :key="item">
+              <h3 class="medium">{{ item }}</h3>
+            </el-carousel-item>
+          </el-carousel>
+        </div>
+      </div>
+      <div class="contact" id="#contact"></div>
     </el-main>
     <!-- 主体部分结束 -->
 
@@ -46,17 +66,18 @@
 
 <script>
 export default {
+  data() {
+    return {
+      menuList: []
+    }
+  },
   methods: {
-    // 页面向下滑动时固定导航栏
-    fixHeader() {
-      alert('dsa')
-    },
-    changePosition() {
-      const str = this.$route.query
-      console.log(str)
-      if (str != null) {
-        document.querySelector(str).scrollIntoView({ behavior: 'smooth' })
-      }
+    // 点击导航栏标签  页面滑动到相应的锚点
+    scrollTo(str) {
+      var el = document.getElementById(str)
+      this.$nextTick(function() {
+        window.scrollTo({ behavior: 'smooth', top: el && el.offsetTop - 80 })
+      })
     }
   },
 
@@ -70,13 +91,13 @@ export default {
   height: 100%;
 }
 .el-header {
+  position: fixed;
   display: flex;
   width: 100% !important;
   padding: 0 50px;
   justify-content: space-between;
   align-items: center;
   z-index: 999;
-  height: 80px !important;
   background: black;
 
   * {
@@ -119,7 +140,6 @@ export default {
     height: 800px;
     background-image: url('../assets/mty.png');
     background-size: cover;
-
     .start-btn {
       width: 200px;
       height: 50px;
@@ -153,10 +173,36 @@ export default {
     }
   }
   .pro-info {
-    height: 500px;
+    height: 600px;
+    background-color: #eee;
   }
-  .team-ifo {
-    height: 700px;
+  .team-info {
+    position: relative;
+    height: 600px;
+    background-color: #fff;
+
+    .pic-box {
+      position: absolute;
+      width: 800px;
+      top: 50px;
+      left: 50%;
+      transform: translateX(-50%);
+      .el-carousel__item h3 {
+        color: #475669;
+        font-size: 14px;
+        opacity: 0.75;
+        line-height: 200px;
+        margin: 0;
+      }
+
+      .el-carousel__item:nth-child(2n) {
+        background-color: #99a9bf;
+      }
+
+      .el-carousel__item:nth-child(2n + 1) {
+        background-color: #d3dce6;
+      }
+    }
   }
 }
 </style>

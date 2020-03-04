@@ -53,7 +53,9 @@ export default {
 <style lang="less" scoped>
 .scanPage {
   height: 800px;
-  // background-image: url('../../assets/mty.png');
+  background-image: url('../../assets/mty.png');
+  background-size: cover;
+  background-position: 0 -100px;
   .upload-box {
     position: absolute;
     margin: auto;

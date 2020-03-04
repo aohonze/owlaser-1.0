@@ -157,11 +157,10 @@ export default {
 }
 .el-aside {
   width: 250px !important;
-  min-height: 100vh;
   padding: 5px 0px 0px 5px;
   .el-table {
     margin-top: 20px;
-    min-height: 70vh;
+    min-height: 450px;
   }
 }
 .el-main {
