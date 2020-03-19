@@ -115,12 +115,7 @@
 export default {
   data() {
     return {
-      tableData: [
-        {
-          artifact_id: 'spring - boot - starter - json',
-          group_id: ' org.springframework.boot'
-        }
-      ],
+      tableData: [],
       input: ''
     }
   },

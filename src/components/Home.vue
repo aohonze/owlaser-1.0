@@ -1,16 +1,11 @@
 <template>
   <el-container class="home-container">
     <!-- 顶栏导航栏开始 -->
-
     <el-header>
       <div class="logo">
         <span>OWLASER</span>
       </div>
-      <el-menu
-        :default-active="activeIndex"
-        mode="horizontal"
-        active-text-color="#2980b9"
-      >
+      <el-menu mode="horizontal" active-text-color="#2980b9">
         <el-menu-item index="/" @click="scrollTo('#banner')"
           >首 页</el-menu-item
         >
@@ -23,8 +18,10 @@
         <el-menu-item index="contact" @click="scrollTo('#contact')"
           >联系我们</el-menu-item
         >
-        <el-button>登 录</el-button>
-        <el-button>注 册</el-button>
+        <div class="menu-btn">
+          <el-button>登 录</el-button>
+          <el-button>注 册</el-button>
+        </div>
       </el-menu>
     </el-header>
     <!-- 顶栏导航栏结束 -->
@@ -47,8 +44,8 @@
       <div class="team-info" id="#teamInfo">
         <h1>About Our Team</h1>
         <div class="pic-box">
-          <el-carousel :interval="4000" type="card" height="200px">
-            <el-carousel-item v-for="item in 6" :key="item">
+          <el-carousel :interval="4000" type="card" height="400px">
+            <el-carousel-item v-for="item in 4" :key="item">
               <h3 class="medium">{{ item }}</h3>
             </el-carousel-item>
           </el-carousel>
@@ -123,21 +120,24 @@ export default {
       color: #409eff !important;
       background: transparent !important;
     }
-    .el-button {
-      margin: 0 10px;
-    }
-    .el-button:hover {
-      color: white;
-      background: #2980b9;
+    .menu-btn {
+      width: 200px;
+      .el-button {
+        margin: 0 10px;
+      }
+      .el-button:hover {
+        color: white;
+        background: #2980b9;
+        border: 1px solid #2980b9;
+      }
     }
   }
 }
 
 .el-main {
   padding: 0;
-
   .banner {
-    height: 800px;
+    height: 100vh;
     background-image: url('../assets/mty.png');
     background-size: cover;
     .start-btn {
@@ -174,12 +174,10 @@ export default {
   }
   .pro-info {
     height: 600px;
-    background-color: #eee;
   }
   .team-info {
     position: relative;
     height: 600px;
-    background-color: #fff;
 
     .pic-box {
       position: absolute;

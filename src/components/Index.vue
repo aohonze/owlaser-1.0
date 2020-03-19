@@ -11,7 +11,7 @@
         <!-- logo -->
         <el-menu-item index="/">OWLASER</el-menu-item>
         <!-- 导航选项 -->
-        <el-menu-item index="/scan">扫描中心</el-menu-item>
+        <el-menu-item index="/result">扫描中心</el-menu-item>
         <el-menu-item index="/repo">组件库</el-menu-item>
         <el-menu-item index="/recycle">回收站</el-menu-item>
       </el-menu>
@@ -34,6 +34,12 @@
 
 <script>
 export default {
+  data() {
+    return {
+      activeIndex: '/result'
+    }
+  },
+
   methods: {
     open2() {
       this.$message({

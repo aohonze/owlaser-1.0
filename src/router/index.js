@@ -22,17 +22,35 @@ Vue.use(VueRouter)
 
 // 路由管理
 const routes = [
-  { path: '/', component: Home },
+  {
+    path: '/',
+    component: Home
+  },
   {
     path: '/index',
     component: Index,
     redirect: '/scan',
     children: [
-      { path: '/scan', component: Scan },
-      { path: '/repo', component: Repo },
-      { path: '/result', component: Result },
-      { path: '/detail', component: Detail },
-      { path: '/recycle', component: Recycle }
+      {
+        path: '/scan',
+        component: Scan
+      },
+      {
+        path: '/repo',
+        component: Repo
+      },
+      {
+        path: '/result',
+        component: Result
+      },
+      {
+        path: '/detail',
+        component: Detail
+      },
+      {
+        path: '/recycle',
+        component: Recycle
+      }
     ]
   }
 ]
