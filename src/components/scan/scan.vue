@@ -10,12 +10,8 @@
         :file-list="fileList"
         :auto-upload="false"
       >
-        <el-button slot="trigger" class="selectFile-btn"
-          >选取pom.xml文件</el-button
-        >
-        <el-button @click="submitUpload" class="uploadFile-btn"
-          >开始扫描</el-button
-        >
+        <el-button slot="trigger" class="selectFile-btn">选取pom.xml文件</el-button>
+        <el-button @click="submitUpload" class="uploadFile-btn">开始扫描</el-button>
       </el-upload>
     </div>
     <!-- 上传部分盒子结束 -->
@@ -33,7 +29,6 @@ export default {
 
   methods: {
     submitUpload() {
-      // console.log(this.$refs.upload.fileList)
       this.$refs.upload.submit()
       this.$message({
         message: '已上传成功，正在为您扫描，请稍等！',

@@ -5,7 +5,7 @@
       <el-footer>
         <div>
           <h2>PKU-HUAWEI</h2>
-          <a href="">GitHub</a>
+          <a href>GitHub</a>
         </div>
       </el-footer>
       <!-- 页脚部分结束 -->
@@ -17,7 +17,7 @@
 .el-footer {
   position: relative;
   width: 100%;
-  height: 500px !important;
+  height: 200px !important;
   background: black;
   color: white;
   div {

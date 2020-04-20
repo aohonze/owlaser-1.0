@@ -8,10 +8,7 @@
           <el-button slot="append" icon="el-icon-search"></el-button>
         </el-input>
         <el-table :data="tableData" @row-click="openDetails">
-          <el-table-column
-            prop="artifact_id"
-            label="Artifact ID"
-          ></el-table-column>
+          <el-table-column prop="artifact_id" label="Artifact ID"></el-table-column>
         </el-table>
       </el-card>
     </el-aside>
@@ -25,12 +22,9 @@
         @row-click="downLoadDependency"
       >
         <el-table-column label="序号" type="index"></el-table-column>
-        <el-table-column prop="child_artifactid" label="child_artifactid">
-        </el-table-column>
-        <el-table-column prop="child_groupid" label="child_groupid" sortable>
-        </el-table-column>
-        <el-table-column prop="url" label="url" width="500px">
-        </el-table-column>
+        <el-table-column prop="child_artifactid" label="child_artifactid"></el-table-column>
+        <el-table-column prop="child_groupid" label="child_groupid" sortable></el-table-column>
+        <el-table-column prop="url" label="url" width="500px"></el-table-column>
       </el-table>
     </el-main>
     <!-- 右边主体结束 -->
@@ -79,16 +73,19 @@ export default {
 </script>
 
 <style lang="less" scoped>
-.el-aside {
-  width: 250px !important;
-  min-height: 100vh;
-  padding: 5px 0px 0px 5px;
-  .el-table {
-    margin-top: 20px;
-    min-height: 70vh;
+.el-container {
+  padding-top: 70px;
+  .el-aside {
+    width: 250px !important;
+    min-height: 100vh;
+    padding: 5px 0px 0px 5px;
+    .el-table {
+      margin-top: 20px;
+      min-height: 70vh;
+    }
   }
-}
-.el-main {
-  min-height: 100vh;
+  .el-main {
+    min-height: 100vh;
+  }
 }
 </style>

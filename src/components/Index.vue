@@ -2,12 +2,7 @@
   <el-container>
     <!-- 顶栏导航栏开始 -->
     <el-header>
-      <el-menu
-        :default-active="activeIndex"
-        mode="horizontal"
-        router
-        active-text-color="#2980b9"
-      >
+      <el-menu :default-active="activeIndex" mode="horizontal" router active-text-color="#2980b9">
         <!-- logo -->
         <el-menu-item index="/">OWLASER</el-menu-item>
         <!-- 导航选项 -->
@@ -53,10 +48,13 @@ export default {
 
 <style lang="less" scoped>
 .el-header {
+  position: fixed;
   display: flex;
+  width: 100%;
   justify-content: space-between;
   align-items: center;
   background: #24292e;
+  z-index: 999;
   * {
     color: white;
     background: transparent;
@@ -71,7 +69,6 @@ export default {
     font-size: 25px;
     margin-right: 30px;
   }
-
   .el-menu-item:hover {
     color: #409eff !important;
     background: transparent !important;
