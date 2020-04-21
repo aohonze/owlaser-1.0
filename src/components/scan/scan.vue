@@ -5,10 +5,11 @@
       <el-upload
         class="upload-demo"
         ref="upload"
-        action="http://114.116.114.218:8081/upload"
+        action="http://182.254.200.15:8081/upload"
         :on-success="handleAvatarSuccess"
         :file-list="fileList"
         :auto-upload="false"
+        :on-progress="loading"
       >
         <el-button slot="trigger" class="selectFile-btn">选取pom.xml文件</el-button>
         <el-button @click="submitUpload" class="uploadFile-btn">开始扫描</el-button>
@@ -23,23 +24,48 @@ export default {
   data() {
     return {
       file: '',
-      fileList: []
+      fileList: [],
+      load: null
+    }
+  },
+  watch: {
+    fileList: val => {
+      console.log(val)
     }
   },
 
   methods: {
     submitUpload() {
-      this.$refs.upload.submit()
-      this.$message({
-        message: '已上传成功，正在为您扫描，请稍等！',
-        type: 'success'
-      })
+      if (this.fileList) {
+        this.$refs.upload.submit()
+        // this.$message({
+        //   message: '已上传成功，正在为您扫描，请稍等！',
+        //   type: 'success'
+        // })
+      }
     },
 
     handleAvatarSuccess(response, file, fileList) {
+      this.load.close()
       // 把上传后的返回值存入list
-      this.$store.state.list = response.data
-      this.$router.push('/result')
+      if (response.errno === 0) {
+        sessionStorage.setItem('responseData', JSON.stringify(response.data))
+        this.$store.state.scanResult = response.data
+        this.$router.push('/result')
+      } else {
+        this.$message({
+          message: '文件扫描失败！请重试！',
+          type: 'error'
+        })
+      }
+    },
+    loading() {
+      this.load = this.$loading({
+        lock: true,
+        text: '已上传成功，正在为您扫描，请稍等！',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
     }
   }
 }
@@ -47,7 +73,7 @@ export default {
 
 <style lang="less" scoped>
 .scanPage {
-  height: 800px;
+  height: 100vh;
   background-image: url('../../assets/mty.png');
   background-size: cover;
   background-position: 0 -100px;

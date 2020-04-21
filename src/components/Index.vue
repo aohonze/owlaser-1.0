@@ -12,7 +12,7 @@
       </el-menu>
       <div class="user-center">
         <i class="el-icon-user n"></i>
-        Tyrone
+        Admin
       </div>
     </el-header>
     <!-- 顶栏导航栏结束 -->

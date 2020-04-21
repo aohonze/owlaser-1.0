@@ -6,18 +6,10 @@
         <span>OWLASER</span>
       </div>
       <el-menu mode="horizontal" active-text-color="#2980b9">
-        <el-menu-item index="/" @click="scrollTo('#banner')"
-          >首 页</el-menu-item
-        >
-        <el-menu-item index="proInfo" @click="scrollTo('#proInfo')"
-          >项目介绍</el-menu-item
-        >
-        <el-menu-item index="teamInfo" @click="scrollTo('#teamInfo')"
-          >团队故事</el-menu-item
-        >
-        <el-menu-item index="contact" @click="scrollTo('#contact')"
-          >联系我们</el-menu-item
-        >
+        <el-menu-item index="/" @click="scrollTo('#banner')">首 页</el-menu-item>
+        <el-menu-item index="proInfo" @click="scrollTo('#proInfo')">项目介绍</el-menu-item>
+        <el-menu-item index="teamInfo" @click="scrollTo('#teamInfo')">团队故事</el-menu-item>
+        <el-menu-item index="contact" @click="scrollTo('#contact')">联系我们</el-menu-item>
         <div class="menu-btn">
           <el-button>登 录</el-button>
           <el-button>注 册</el-button>
@@ -29,6 +21,7 @@
     <!-- 主体部分开始 -->
     <el-main>
       <div class="banner" id="#banner">
+        <img src="https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/mty.png" />
         <div class="center">
           <h1>OWLASER</h1>
           <p>OWLASER make your project more ....</p>
@@ -39,16 +32,23 @@
         </div>
       </div>
       <div class="pro-info" id="#proInfo">
-        <h1>About The Project</h1>
+        <div class="pro-info-intro">
+          <h3>OWLASER</h3>
+          <p>帮助您全方位审视项目当中的潜在问题！</p>
+        </div>
+        <img src="https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/owlaser.png" />
       </div>
       <div class="team-info" id="#teamInfo">
-        <h1>About Our Team</h1>
         <div class="pic-box">
           <el-carousel :interval="4000" type="card" height="400px">
             <el-carousel-item v-for="item in 4" :key="item">
               <h3 class="medium">{{ item }}</h3>
             </el-carousel-item>
           </el-carousel>
+        </div>
+        <div class="team-info-intro">
+          TEAM
+          <p>北大-华为实验班开源组件健康扫描项目全体成员！</p>
         </div>
       </div>
       <div class="contact" id="#contact"></div>
@@ -110,11 +110,13 @@ export default {
     border: 0;
     height: 100%;
     .el-menu-item {
+      height: 100%;
       font-size: 16px;
     }
     .el-menu-item:hover {
       color: #409eff !important;
       background: transparent !important;
+      border-bottom: 2px solid #409eff !important;
     }
     .el-menu-item.is-active {
       color: #409eff !important;
@@ -138,8 +140,11 @@ export default {
   padding: 0;
   .banner {
     height: 100vh;
-    background-image: url('../assets/mty.png');
-    background-size: cover;
+    overflow: hidden;
+    img {
+      width: 100%;
+      animation: move 20s infinite;
+    }
     .start-btn {
       width: 200px;
       height: 50px;
@@ -173,18 +178,37 @@ export default {
     }
   }
   .pro-info {
-    height: 600px;
+    height: 700px;
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    .pro-info-intro {
+      font-size: 50px;
+
+      p {
+        font-size: 30px;
+      }
+    }
+    img {
+      height: 400px;
+      transform: rotate(10deg);
+    }
   }
   .team-info {
-    position: relative;
-    height: 600px;
+    height: 800px;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    .team-info-intro {
+      font-size: 50px;
 
+      p {
+        font-size: 30px;
+      }
+    }
     .pic-box {
-      position: absolute;
       width: 800px;
-      top: 50px;
-      left: 50%;
-      transform: translateX(-50%);
       .el-carousel__item h3 {
         color: #475669;
         font-size: 14px;
@@ -201,6 +225,18 @@ export default {
         background-color: #d3dce6;
       }
     }
+  }
+}
+
+@keyframes move {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+  100% {
+    transform: scale(1);
   }
 }
 </style>

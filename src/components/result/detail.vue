@@ -4,28 +4,36 @@
     <el-aside>
       <!-- 搜索与列表区域 -->
       <el-card class="box-card">
-        <el-input placeholder="请输入组件名...">
-          <el-button slot="append" icon="el-icon-search"></el-button>
-        </el-input>
-        <el-table :data="tableData" @row-click="openDetails">
-          <el-table-column prop="artifact_id" label="Artifact ID"></el-table-column>
+        <div slot="header">
+          <el-input placeholder="请输入组件名..." v-model="input">
+            <el-button slot="append" icon="el-icon-search"></el-button>
+          </el-input>
+        </div>
+        <el-table :data="searchlist || dependenciesList" @row-click="openDetails">
+          <el-table-column label="序号" type="index" width="40px" align="center"></el-table-column>
+          <el-table-column prop="artifact_id" label="Artifact ID" show-overflow-tooltip></el-table-column>
         </el-table>
       </el-card>
     </el-aside>
     <!-- 左边区域结束 -->
     <!-- 右边主体开始 -->
     <el-main>
-      <el-table
-        ref="filterTable"
-        :data="tableData"
-        style="width: 100%"
-        @row-click="downLoadDependency"
-      >
-        <el-table-column label="序号" type="index"></el-table-column>
-        <el-table-column prop="child_artifactid" label="child_artifactid"></el-table-column>
-        <el-table-column prop="child_groupid" label="child_groupid" sortable></el-table-column>
-        <el-table-column prop="url" label="url" width="500px"></el-table-column>
-      </el-table>
+      <el-card class="box-card" shadow="hover">
+        <div slot="header" class="clearfix">
+          <span>{{this.$route.query.artifact_id}} 组件依赖信息</span>
+        </div>
+        <el-table
+          ref="filterTable"
+          :data="detailList"
+          style="width: 100%"
+          @row-click="downLoadDependency"
+        >
+          <el-table-column label="序号" type="index"></el-table-column>
+          <el-table-column prop="child_artifactid" label="child_artifactid"></el-table-column>
+          <el-table-column prop="child_groupid" label="child_groupid" sortable></el-table-column>
+          <el-table-column prop="url" label="url" width="500px" show-overflow-tooltip></el-table-column>
+        </el-table>
+      </el-card>
     </el-main>
     <!-- 右边主体结束 -->
   </el-container>
@@ -35,23 +43,46 @@
 export default {
   data() {
     return {
-      tableData: []
+      detailList: [],
+      dependenciesList: [],
+      checkMessage: {},
+      input: '',
+      searchlist: null
     }
   },
-  created() {
+  mounted() {
     // 组件创建完后获取数据，
     // 此时 data 已经被 observed 了
     this.fetchData()
   },
+
   watch: {
     // 如果路由有变化，会再次执行该方法
-    $route: 'fetchData'
+    $route: 'fetchData',
+
+    // 左边框输入信息时候响应跳转
+    input: function(value) {
+      this.searchlist = this.dependenciesList.filter(item => {
+        const regx = new RegExp(value)
+        return item.artifact_id.search(regx) !== -1
+      })
+    }
   },
+
   methods: {
+    // 将存在store里面的数据导入本页面
+
     async fetchData() {
+      const data = JSON.parse(sessionStorage.getItem('responseData'))
+      this.dependenciesList =
+        this.$store.state.scanResult.dependenciesList || data.dependenciesList
+      this.checkMessage =
+        this.$store.state.scanResult.checkMessage || data.checkMessage
+
+      // 查询详细组件信息
       const dependencyInfo = this.$route.query
       const { data: res } = await this.$http.get(
-        'http://114.116.114.218:8081/getdependency',
+        'http://182.254.200.15:8081/getdependency',
         {
           params: {
             groupId: dependencyInfo.group_id,
@@ -61,12 +92,20 @@ export default {
       )
       // 将得到的数据渲染到表格当中
       for (const item in res.data.list) {
-        this.tableData = this.tableData.concat(res.data.list[item])
+        this.detailList = this.detailList.concat(res.data.list[item])
       }
     },
     // 用户点击具体的组件   跳转到MavenRepository
     downLoadDependency(row) {
       window.open(row.url)
+    },
+    openDetails(row) {
+      // 点击表格中的一行时跳转到细节页面  把当前表格行的值作为参数
+      this.detailList = []
+      this.$router.replace({
+        path: './detail',
+        query: { group_id: row.group_id, artifact_id: row.artifact_id }
+      })
     }
   }
 }
@@ -74,18 +113,27 @@ export default {
 
 <style lang="less" scoped>
 .el-container {
-  padding-top: 70px;
+  padding: 75px 0 20px 0;
+  background: rgb(250, 248, 248);
   .el-aside {
     width: 250px !important;
-    min-height: 100vh;
-    padding: 5px 0px 0px 5px;
-    .el-table {
-      margin-top: 20px;
-      min-height: 70vh;
+    .box-card {
+      .el-table {
+        margin-top: -20px;
+        height: 76vh;
+        overflow: scroll;
+      }
     }
   }
   .el-main {
-    min-height: 100vh;
+    padding: 0px 10px 0 20px;
+    .el-card {
+      .el-table {
+        margin-top: -20px;
+        height: 78vh;
+        overflow: scroll;
+      }
+    }
   }
 }
 </style>

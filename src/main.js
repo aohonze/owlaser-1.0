@@ -21,7 +21,8 @@ Vue.prototype.$http = axios
 Vue.config.productionTip = false
 
 // 全局注册组件
-Vue.component('my-footer', () => import('./components/common/footer.vue'))
+Vue.component('my-footer', () =>
+  import ('./components/common/footer.vue'))
 
 new Vue({
   router,

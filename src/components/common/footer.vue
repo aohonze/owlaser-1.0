@@ -17,7 +17,7 @@
 .el-footer {
   position: relative;
   width: 100%;
-  height: 200px !important;
+  height: 100px !important;
   background: black;
   color: white;
   div {

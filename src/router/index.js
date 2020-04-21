@@ -4,53 +4,42 @@ import VueRouter from 'vue-router'
 // 路由管理页面
 // import Index from '../views/Index.vue'
 
-const Home = () => import('../components/Home.vue')
+const Home = () =>
+  import ('../components/Home.vue')
 
-const Index = () => import('../components/Index.vue')
+const Index = () =>
+  import ('../components/Index.vue')
 
-const Scan = () => import('../components/scan/scan.vue')
+const Scan = () =>
+  import ('../components/scan/scan.vue')
 
-const Repo = () => import('../components/repo/repo.vue')
+const Repo = () =>
+  import ('../components/repo/repo.vue')
 
-const Result = () => import('../components/result/result.vue')
+const Result = () =>
+  import ('../components/result/result.vue')
 
-const Detail = () => import('../components/result/detail.vue')
+const Detail = () =>
+  import ('../components/result/detail.vue')
 
-const Recycle = () => import('../components/repo/recycle.vue')
+const Recycle = () =>
+  import ('../components/repo/recycle.vue')
 
 Vue.use(VueRouter)
 
 // 路由管理
 const routes = [
-  {
-    path: '/',
-    component: Home
-  },
+  { path: '/', component: Home },
   {
     path: '/index',
     component: Index,
     redirect: '/scan',
     children: [
-      {
-        path: '/scan',
-        component: Scan
-      },
-      {
-        path: '/repo',
-        component: Repo
-      },
-      {
-        path: '/result',
-        component: Result
-      },
-      {
-        path: '/detail',
-        component: Detail
-      },
-      {
-        path: '/recycle',
-        component: Recycle
-      }
+      { path: '/scan', component: Scan },
+      { path: '/repo', component: Repo },
+      { path: '/result', component: Result },
+      { path: '/detail', component: Detail },
+      { path: '/recycle', component: Recycle }
     ]
   }
 ]
