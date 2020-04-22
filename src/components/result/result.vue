@@ -101,9 +101,16 @@
             </el-card>
           </div>
 
-          <el-card class="license-card" shadow="hover">
+          <el-card class="version-card" shadow="hover">
             <div slot="header" class="clearfix">
               <span>版本优选信息</span>
+            </div>
+            <div class="table-tips">
+              <el-badge value="HOT">
+                <el-button size="mini">推荐版本</el-button>
+              </el-badge>
+              <el-button size="mini" type="success" plain>更高版本</el-button>
+              <el-button size="mini" type="warning" plain>更低版本</el-button>
             </div>
             <el-table :data="dependenciesList" @row-click="openDetails" stripe>
               <el-table-column label="序号" type="index" align="center"></el-table-column>
@@ -115,7 +122,16 @@
                 width="250px"
               ></el-table-column>
               <el-table-column prop="version" label="目前版本" align="center"></el-table-column>
-              <el-table-column prop="popular_version" label="最热版本" align="center"></el-table-column>
+              <el-table-column prop="popular_version" label="最热版本" align="center">
+                <template scope="scope">
+                  {{scope.row.popular_version}}
+                  <el-badge
+                    v-if="scope.row.popular_version>=scope.row.version && scope.row.popular_version==scope.row.stable_version"
+                    value="HOT"
+                    class="item"
+                  ></el-badge>
+                </template>
+              </el-table-column>
               <el-table-column prop="stable_version" label="稳定版本" align="center">
                 <template scope="scope">
                   <span v-if="scope.row.stable_version>=scope.row.version">
@@ -355,6 +371,18 @@ export default {
               color: #27ae60;
               font-weight: bolder;
               margin: 0 10px;
+            }
+          }
+        }
+        .version-card {
+          .table-tips {
+            margin-top: -5px;
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            margin-bottom: 20px;
+            .el-badge {
+              margin-right: 40px;
             }
           }
         }
