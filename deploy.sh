@@ -15,7 +15,7 @@ cd ./dist
 # 推送到git-pages
 git init
 git add .
-git commit -m '更改界面配色'
+git commit -m '首页样式修改'
 git remote add origin https://github.com/Tyrone-Wu/Owlaser.git
 git push -f origin master
 git remote add coding https://e.coding.net/tyronewu/OWLASER.git

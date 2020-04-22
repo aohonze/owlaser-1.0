@@ -103,8 +103,11 @@ export default {
       menuList: [],
       imgList: [
         'https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/team1.jpg',
-        'https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/team3.jpg',
-        'https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/team2.jpg'
+        'https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/team2.jpg',
+        'https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/o-team5.png',
+        'https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/o-team4.png',
+        'https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/o-team6.png',
+        'https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/o-team7.png'
       ]
     }
   },
