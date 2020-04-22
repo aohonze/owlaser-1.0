@@ -106,11 +106,17 @@
               <span>版本优选信息</span>
             </div>
             <div class="table-tips">
-              <el-badge value="HOT">
-                <el-button size="mini">推荐版本</el-button>
+              <el-badge value="推荐">
+                <el-tooltip class="item" effect="dark" content="该组件稳定版本和最热版本相同" placement="top">
+                  <el-button size="mini">推荐版本</el-button>
+                </el-tooltip>
               </el-badge>
-              <el-button size="mini" type="primary" plain>更高版本</el-button>
-              <el-button size="mini" type="warning" plain>更低版本</el-button>
+              <el-tooltip class="item" effect="dark" content="稳定版本比当前使用版本更高" placement="top">
+                <el-button size="mini" type="primary" plain>更高版本</el-button>
+              </el-tooltip>
+              <el-tooltip class="item" effect="dark" content="稳定版本比当前使用版本更低" placement="top">
+                <el-button size="mini" type="warning" plain>更低版本</el-button>
+              </el-tooltip>
             </div>
             <el-table :data="dependenciesList" @row-click="openDetails" stripe>
               <el-table-column label="序号" type="index" align="center"></el-table-column>
@@ -127,7 +133,7 @@
                   {{scope.row.popular_version}}
                   <el-badge
                     v-if="scope.row.popular_version>=scope.row.version && scope.row.popular_version==scope.row.stable_version"
-                    value="HOT"
+                    value="推荐"
                     class="item"
                   ></el-badge>
                 </template>

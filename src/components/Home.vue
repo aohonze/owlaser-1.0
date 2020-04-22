@@ -38,10 +38,40 @@
       </div>
       <div class="pro-info" id="#proInfo">
         <div class="pro-info-intro">
-          <h3>OWLASER</h3>
-          <p>帮助您全方位审视项目当中的潜在问题！</p>
+          <p>帮助您全方位审视项目当中的潜在问题</p>
         </div>
-        <img src="https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/owlaser.png" />
+        <div class="img-box">
+          <img src="https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/o-result.png" />
+          <img
+            src="https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/o-secur.png"
+            style="margin-top:100px"
+          />
+        </div>
+        <div class="p-box">
+          <el-card class="box-card" shadow="hover">
+            <div class="header">版 本</div>
+            <div class="intro">
+              最热版本
+              稳定版本
+              版本推荐
+            </div>
+          </el-card>
+          <el-card class="box-card" shadow="hover">
+            <div class="header">证 书</div>
+            <div class="intro">
+              证书信息
+              冲突提示
+            </div>
+          </el-card>
+          <el-card class="box-card" shadow="hover">
+            <div class="header">漏 洞</div>
+            <div class="intro">
+              漏洞等级
+              漏洞版本
+              修复信息
+            </div>
+          </el-card>
+        </div>
       </div>
       <div class="team-info" id="#teamInfo">
         <div class="pic-box">
@@ -53,7 +83,7 @@
         </div>
         <div class="team-info-intro">
           TEAM
-          <p>北大-华为实验班开源组件健康扫描项目全体成员！</p>
+          <p>北大-华为实验班开源组件健康扫描项目全体成员</p>
         </div>
       </div>
       <div class="contact" id="#contact"></div>
@@ -219,24 +249,54 @@ export default {
     }
   }
   .pro-info {
-    height: 700px;
     display: flex;
+    flex-direction: column;
     justify-content: space-around;
     align-items: center;
+    margin-top: 50px;
     .pro-info-intro {
-      font-size: 50px;
-
       p {
-        font-size: 30px;
+        font-size: 40px;
+        font-weight: lighter;
       }
     }
-    img {
-      opacity: 0.9;
-      height: 400px;
-      transform: rotate(10deg);
+    .img-box {
+      height: 500px;
+      display: flex;
+      justify-content: space-around;
+      align-items: center;
+      img {
+        opacity: 0.9;
+        width: 650px;
+        margin: 20px;
+        border-radius: 5px;
+        transform: rotate(-10deg);
+      }
+      img:hover {
+        opacity: 1;
+      }
     }
-    img:hover {
-      opacity: 1;
+    .p-box {
+      margin-top: 80px;
+      width: 100%;
+      height: 150px;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-around;
+      align-content: space-between;
+      .el-card {
+        width: 300px;
+        font-weight: lighter;
+        .header {
+          font-size: 30px;
+          margin-bottom: 20px;
+        }
+        .intro {
+          height: 30px;
+          line-height: 30px;
+          font-size: 20px;
+        }
+      }
     }
   }
   .team-info {
@@ -264,6 +324,7 @@ export default {
     }
     .team-info-intro {
       font-size: 50px;
+      font-weight: lighter;
 
       p {
         font-size: 30px;

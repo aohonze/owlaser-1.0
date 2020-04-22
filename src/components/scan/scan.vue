@@ -87,7 +87,7 @@ export default {
 <style lang="less" scoped>
 .scanPage {
   height: 100vh;
-  background-image: url('../../assets/mty.png');
+  background-image: url('https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/mty.png');
   background-size: cover;
   background-position: 0 -100px;
   .upload-box {
