@@ -25,12 +25,18 @@
         <el-upload
           class="upload-demo"
           ref="upload"
-          action="http://182.254.200.15:8081/upload"
-          :on-success="handleAvatarSuccess"
+          action="http://182.254.200.15:8081"
+          :http-request="uploadFile"
+          :file-list="fileList"
           :auto-upload="false"
         >
           <el-button slot="trigger" class="selectFile-btn">选取pom.xml文件</el-button>
-          <el-button icon="el-icon-search" @click="submitUpload" type="primary">开始扫描</el-button>
+          <el-button
+            @click="submitUpload"
+            class="uploadFile-btn"
+            type="primary"
+            icon="el-icon-search"
+          >开始扫描</el-button>
         </el-upload>
       </div>
       <!-- 搜索与添加区域结束 -->
@@ -39,43 +45,99 @@
       <div class="result-box">
         <el-card class="result-card" shadow="hover">
           <div slot="header" class="clearfix">
-            <span>项目扫描结果</span>
+            <span class="result-header">项目组件包扫描结果报告</span>
           </div>
-          <el-alert type=" error">你的项目一共有{{securList}}个组件包含漏洞！</el-alert>
-          <div v-for="(item,index) in checkMessage.license_detail" :key="index">
-            <el-alert type="error">{{ item }}</el-alert>
-          </div>
-        </el-card>
-        <el-card class="license-card" shadow="hover">
-          <div slot="header" class="clearfix">
-            <span>版本优选</span>
-          </div>
-          <el-table :data="dependenciesList" @row-click="openDetails">
-            <el-table-column label="序号" type="index" align="center"></el-table-column>
-            <el-table-column prop="group_id" label="Group ID" show-overflow-tooltip></el-table-column>
-            <el-table-column
-              prop="artifact_id"
-              label="Artifact ID"
-              show-overflow-tooltip
-              width="250px"
-            ></el-table-column>
-            <el-table-column prop="version" label="目前版本" align="center"></el-table-column>
-            <el-table-column prop="popular_version" label="最热版本" align="center"></el-table-column>
-            <el-table-column prop="stable_version" label="稳定版本" align="center"></el-table-column>
-          </el-table>
-          <el-button type="small">查看更多</el-button>
-        </el-card>
 
-        <el-card class="secur-card" shadow="hover" style="margin-top:10px">
-          <div slot="header" class="clearfix">
-            <span>漏洞信息</span>
+          <!-- 顶部提示信息 -->
+          <div class="tips">
+            <el-card class="license-card" shadow="hover">
+              <div slot="header" class="clearfix">
+                <span>
+                  证书提示
+                  <span class="msg">
+                    共
+                    <span
+                      class="num"
+                      :style="securList.length>0 && `color: red`"
+                    >{{checkMessage.license_detail.length}}</span>条
+                  </span>
+                </span>
+              </div>
+
+              <el-alert
+                v-if="checkMessage.license_detail.length == 0"
+                type="success'"
+                :closable="false"
+              >您的项目没有任何证书问题！</el-alert>
+              <div v-else v-for="(item, index) in checkMessage.license_detail" :key="index">
+                <el-alert type="error" :closable="false">{{item}}</el-alert>
+              </div>
+            </el-card>
+
+            <el-card class="secur-card" shadow="hover">
+              <div slot="header" class="clearfix">
+                <span>
+                  漏洞信息
+                  <span class="msg">
+                    共
+                    <span
+                      class="num"
+                      :style="securList.length>0 && `color: red`"
+                    >{{securList.length}}</span>条
+                  </span>
+                </span>
+              </div>
+
+              <el-alert v-if="securList.length == 0" type="success" :closable="false">您的项目没有任何漏洞！</el-alert>
+              <div v-else v-for="(item, index) in securList" :key="index">
+                <el-alert
+                  type="error"
+                  :closable="false"
+                >组件包 {{item[0].name}} 当中包含 {{item.length-1}} 个漏洞！</el-alert>
+              </div>
+              <router-link to="/secur">
+                <el-button type="small">查看详细信息</el-button>
+              </router-link>
+            </el-card>
           </div>
-          <el-table :data="dependenciesList" @row-click="openDetails">
-            <el-table-column label="序号" type="index" align="center"></el-table-column>
-            <el-table-column prop="artifact_id" label="Artifact ID" show-overflow-tooltip></el-table-column>
-            <el-table-column prop="license" label="证书" align="center"></el-table-column>
-          </el-table>
-          <el-button type="small">查看更多</el-button>
+
+          <el-card class="license-card" shadow="hover">
+            <div slot="header" class="clearfix">
+              <span>版本优选信息</span>
+            </div>
+            <el-table :data="dependenciesList" @row-click="openDetails" stripe>
+              <el-table-column label="序号" type="index" align="center"></el-table-column>
+              <el-table-column prop="group_id" label="Group ID" show-overflow-tooltip></el-table-column>
+              <el-table-column
+                prop="artifact_id"
+                label="Artifact ID"
+                show-overflow-tooltip
+                width="250px"
+              ></el-table-column>
+              <el-table-column prop="version" label="目前版本" align="center"></el-table-column>
+              <el-table-column prop="popular_version" label="最热版本" align="center"></el-table-column>
+              <el-table-column prop="stable_version" label="稳定版本" align="center">
+                <template scope="scope">
+                  <span v-if="scope.row.stable_version>=scope.row.version">
+                    <el-button
+                      size="small"
+                      type="success"
+                      plain
+                      style="width:120px"
+                    >{{ scope.row.stable_version }}</el-button>
+                  </span>
+                  <span v-else>
+                    <el-button
+                      size="small"
+                      type="warning"
+                      plain
+                      style="width:120px"
+                    >{{ scope.row.stable_version }}</el-button>
+                  </span>
+                </template>
+              </el-table-column>
+            </el-table>
+          </el-card>
         </el-card>
       </div>
       <!-- 搜索结果卡片展示区域结束 -->
@@ -92,7 +154,8 @@ export default {
       checkMessage: {},
       input: '',
       searchlist: null,
-      securList: {}
+      securList: [],
+      fileList: []
     }
   },
   mounted() {
@@ -130,20 +193,21 @@ export default {
           'http://182.254.200.15:8081/security',
           {
             params: {
-              groupId: 'org.apache.hbase',
-              artifactId: 'hbase'
-              // groupId: item.group_id,
-              // artifactId: item.artifact_id
+              groupId: item.group_id,
+              artifactId: item.artifact_id,
+              version: item.version
             }
           }
         )
-        if (res.data.list.length !== 0) {
-          this.securList[item.artifact_id] = res.data.list
+        if (res.data.list.length) {
+          const version = {
+            preVersion: res.data.version
+          }
+          res.data.list.push(version)
+          this.securList.push(res.data.list)
         }
-        // console.log(item.group_id)
-        // console.log(item.artifact_id)
       }
-      // console.log(this.securList)
+      sessionStorage.setItem('securData', JSON.stringify(this.securList))
     },
     openDetails(row) {
       // 点击表格中的一行时跳转到细节页面  把当前表格行的值作为参数
@@ -152,25 +216,52 @@ export default {
         query: { group_id: row.group_id, artifact_id: row.artifact_id }
       })
     },
-    submitUpload() {
-      this.$refs.upload.submit()
-      this.$message({
-        message: '已上传成功，正在为您扫描，请稍等！',
-        type: 'success'
-      })
-    },
 
-    // 上传文件扫描结果返回
-    handleAvatarSuccess(response, file, fileList) {
-      // 把上传后的返回值存入list
+    async uploadFile(param) {
+      // 开始上传 生成等待画面
+      const load = this.$loading({
+        lock: true,
+        text: '已上传成功，正在为您扫描，预计需等待 2-3 分钟！',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
+
+      const file = param.file
+      const form = new FormData()
+      // 文件对象
+      form.append('file', file)
+
+      // 发送异步请求
+      const { data: response } = await this.$http.post(
+        'http://182.254.200.15:8081/upload',
+        form
+      )
+
+      // 收到请求  进行下一步处理
+      load.close()
+
+      // 判断请求是否成功
       if (response.errno === 0) {
+        sessionStorage.setItem('responseData', JSON.stringify(response.data))
         this.$store.state.scanResult = response.data
-        this.$router.push('/result')
+
+        // 更新渲染数据
       } else {
         this.$message({
           message: '文件扫描失败！请重试！',
           type: 'error'
         })
+        this.$store.state.scanResult.dependenciesList = null
+        sessionStorage.removeItem('responseData')
+        setTimeout(() => {
+          this.$router.push('/scan')
+        }, 1000)
+      }
+      this.fetchData()
+    },
+    submitUpload() {
+      if (this.fileList) {
+        this.$refs.upload.submit()
       }
     }
   }
@@ -179,22 +270,21 @@ export default {
 
 <style lang="less" scoped>
 .el-container {
-  height: 100vh;
-  padding: 75px 0 20px 0;
+  padding: 75px 10px 20px 10px;
   background: rgb(250, 248, 248);
   .el-aside {
     width: 250px !important;
-    height: 88vh;
+    min-height: 88vh;
     .box-card {
       height: 99%;
       .el-table {
-        height: 88vh;
         margin-top: -20px;
         overflow: scroll;
       }
     }
   }
   .el-main {
+    min-height: 88vh;
     .search {
       height: 10vh;
       display: flex;
@@ -226,30 +316,47 @@ export default {
         }
         .el-alert {
           margin: 5px 0;
+          font-size: 30px;
         }
       }
       .result-card {
-        height: 300px;
+        .result-header {
+          font-size: 25px;
+        }
         .el-table {
-          height: 15vh;
           overflow: scroll;
           margin-top: -10px;
         }
-      }
-      .license-card {
-        height: 50vh;
-        .el-table {
-          height: 35vh;
-          overflow: scroll;
-          margin-top: -10px;
-        }
-      }
-      .secur-card {
-        height: 50vh;
-        .el-table {
-          height: 35vh;
-          overflow: scroll;
-          margin-top: -10px;
+        .tips {
+          margin-top: -20px;
+          height: 300px;
+          display: flex;
+          .license-card {
+            flex: 1;
+            overflow: scroll;
+          }
+          .secur-card {
+            flex: 1;
+            position: relative;
+            overflow: scroll;
+            .router-link {
+              display: block;
+              position: absolute;
+              left: 50%;
+              bottom: 10px;
+              transform: translateX(-50%);
+            }
+          }
+          .msg {
+            margin-left: 20px;
+            .num {
+              display: inline;
+              font-size: 30px;
+              color: #27ae60;
+              font-weight: bolder;
+              margin: 0 10px;
+            }
+          }
         }
       }
     }

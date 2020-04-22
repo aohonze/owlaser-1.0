@@ -30,6 +30,11 @@
             <el-button type="primary" class="start-btn">GET START</el-button>
           </router-link>
         </div>
+        <!-- 向下指示图标 s-->
+        <div id="down">
+          <canvas id="downCanvas" width="30" height="30"></canvas>
+        </div>
+        <!-- 向下指示图标 e-->
       </div>
       <div class="pro-info" id="#proInfo">
         <div class="pro-info-intro">
@@ -40,9 +45,9 @@
       </div>
       <div class="team-info" id="#teamInfo">
         <div class="pic-box">
-          <el-carousel :interval="4000" type="card" height="400px">
-            <el-carousel-item v-for="item in 4" :key="item">
-              <h3 class="medium">{{ item }}</h3>
+          <el-carousel type="card" height="400px">
+            <el-carousel-item v-for="(item,index) in imgList" :key="index">
+              <img :src="item" alt />
             </el-carousel-item>
           </el-carousel>
         </div>
@@ -65,8 +70,16 @@
 export default {
   data() {
     return {
-      menuList: []
+      menuList: [],
+      imgList: [
+        'https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/team1.jpg',
+        'https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/team3.jpg',
+        'https://cdn.jsdelivr.net/gh/tyrone-wu/PicRepo/team2.jpg'
+      ]
     }
+  },
+  mounted() {
+    this.drawDown()
   },
   methods: {
     // 点击导航栏标签  页面滑动到相应的锚点
@@ -75,6 +88,20 @@ export default {
       this.$nextTick(function() {
         window.scrollTo({ behavior: 'smooth', top: el && el.offsetTop - 80 })
       })
+    },
+    drawDown() {
+      const c = document.getElementById('downCanvas')
+
+      const cxt = c.getContext('2d')
+      cxt.beginPath()
+      cxt.moveTo(5, 20)
+      cxt.lineTo(15, 30)
+      cxt.lineTo(25, 20)
+      cxt.lineWidth = 1
+      cxt.strokeStyle = 'white'
+      cxt.lineCap = 'round'
+      cxt.lineJoin = 'round'
+      cxt.stroke()
     }
   },
 
@@ -140,6 +167,7 @@ export default {
   padding: 0;
   .banner {
     height: 100vh;
+    min-height: 800px;
     overflow: hidden;
     img {
       width: 100%;
@@ -176,6 +204,19 @@ export default {
         margin-bottom: 20px;
       }
     }
+
+    #down {
+      position: absolute;
+      text-align: center;
+      left: 50%;
+      top: 92vh;
+      transform: translateX(-50%);
+      height: 30px;
+      -moz-animation: down 1s linear infinite alternate;
+      -webkit-animation: down 1s linear infinite alternate;
+      -o-animation: down 1s linear infinite alternate;
+      animation: down 1s linear infinite alternate;
+    }
   }
   .pro-info {
     height: 700px;
@@ -190,8 +231,12 @@ export default {
       }
     }
     img {
+      opacity: 0.9;
       height: 400px;
       transform: rotate(10deg);
+    }
+    img:hover {
+      opacity: 1;
     }
   }
   .team-info {
@@ -200,19 +245,11 @@ export default {
     flex-direction: column;
     justify-content: center;
     align-items: center;
-    .team-info-intro {
-      font-size: 50px;
-
-      p {
-        font-size: 30px;
-      }
-    }
     .pic-box {
-      width: 800px;
-      .el-carousel__item h3 {
+      width: 1000px;
+      .el-carousel__item img {
+        height: 100%;
         color: #475669;
-        font-size: 14px;
-        opacity: 0.75;
         line-height: 200px;
         margin: 0;
       }
@@ -223,6 +260,13 @@ export default {
 
       .el-carousel__item:nth-child(2n + 1) {
         background-color: #d3dce6;
+      }
+    }
+    .team-info-intro {
+      font-size: 50px;
+
+      p {
+        font-size: 30px;
       }
     }
   }
@@ -237,6 +281,16 @@ export default {
   }
   100% {
     transform: scale(1);
+  }
+}
+
+@keyframes down {
+  0% {
+    padding-top: 0px;
+  }
+
+  100% {
+    padding-top: 10px;
   }
 }
 </style>

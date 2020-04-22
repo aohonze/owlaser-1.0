@@ -20,19 +20,21 @@
     <el-main>
       <el-card class="box-card" shadow="hover">
         <div slot="header" class="clearfix">
-          <span>{{this.$route.query.artifact_id}} 组件依赖信息</span>
+          <span class="result-header">{{this.$route.query.artifact_id}} 组件依赖信息</span>
         </div>
-        <el-table
-          ref="filterTable"
-          :data="detailList"
-          style="width: 100%"
-          @row-click="downLoadDependency"
-        >
+        <el-table ref="filterTable" :data="detailList" style="width: 100%">
           <el-table-column label="序号" type="index"></el-table-column>
-          <el-table-column prop="child_artifactid" label="child_artifactid"></el-table-column>
-          <el-table-column prop="child_groupid" label="child_groupid" sortable></el-table-column>
-          <el-table-column prop="url" label="url" width="500px" show-overflow-tooltip></el-table-column>
+          <el-table-column prop="child_artifactid" label="Child Artifactid" align="center"></el-table-column>
+          <el-table-column prop="child_groupid" label="Child Groupid" align="center"></el-table-column>
+          <el-table-column prop="url" label="下载组件" align="center">
+            <template scope="scope">
+              <el-button size="small" type="success" plain @click="downLoadDependency(scope.row)">下载</el-button>
+            </template>
+          </el-table-column>
         </el-table>
+        <router-link to="/result">
+          <el-button>返回</el-button>
+        </router-link>
       </el-card>
     </el-main>
     <!-- 右边主体结束 -->
@@ -94,6 +96,7 @@ export default {
       for (const item in res.data.list) {
         this.detailList = this.detailList.concat(res.data.list[item])
       }
+      console.log(this.detailList)
     },
     // 用户点击具体的组件   跳转到MavenRepository
     downLoadDependency(row) {
@@ -128,10 +131,16 @@ export default {
   .el-main {
     padding: 0px 10px 0 20px;
     .el-card {
+      .result-header {
+        font-size: 25px;
+      }
       .el-table {
         margin-top: -20px;
-        height: 78vh;
+        height: 70vh;
         overflow: scroll;
+      }
+      .el-button {
+        margin-top: 20px;
       }
     }
   }

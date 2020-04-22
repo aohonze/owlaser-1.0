@@ -19,6 +19,9 @@ const Repo = () =>
 const Result = () =>
   import ('../components/result/result.vue')
 
+const Secur = () =>
+  import ('../components/result/secur.vue')
+
 const Detail = () =>
   import ('../components/result/detail.vue')
 
@@ -37,6 +40,7 @@ const routes = [
     children: [
       { path: '/scan', component: Scan },
       { path: '/repo', component: Repo },
+      { path: '/secur', component: Secur },
       { path: '/result', component: Result },
       { path: '/detail', component: Detail },
       { path: '/recycle', component: Recycle }

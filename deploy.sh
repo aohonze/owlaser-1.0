@@ -15,6 +15,8 @@ cd ./dist
 # 推送到git-pages
 git init
 git add .
-git commit -m '第一次提交'
+git commit -m '修改路由拦截，数据重置，漏洞信息页面'
 git remote add origin https://github.com/Tyrone-Wu/Owlaser.git
 git push -f origin master
+git remote add coding https://e.coding.net/tyronewu/OWLASER.git
+git push -f coding master

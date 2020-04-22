@@ -5,11 +5,10 @@
       <el-upload
         class="upload-demo"
         ref="upload"
-        action="http://182.254.200.15:8081/upload"
-        :on-success="handleAvatarSuccess"
+        action="http://182.254.200.15:8081"
+        :http-request="uploadFile"
         :file-list="fileList"
         :auto-upload="false"
-        :on-progress="loading"
       >
         <el-button slot="trigger" class="selectFile-btn">选取pom.xml文件</el-button>
         <el-button @click="submitUpload" class="uploadFile-btn">开始扫描</el-button>
@@ -24,30 +23,47 @@ export default {
   data() {
     return {
       file: '',
-      fileList: [],
-      load: null
+      fileList: []
     }
   },
-  watch: {
-    fileList: val => {
-      console.log(val)
+  beforeRouteLeave(to, from, next) {
+    const data =
+      this.$store.state.scanResult.dependenciesList ||
+      sessionStorage.getItem('responseData')
+    // 如果点击的不是首页且没有扫描数据存档，则提示扫描
+    if (data || to.path === '/') {
+      next()
+    } else {
+      alert('请先上传文件扫描！')
+      next(false)
     }
   },
 
   methods: {
-    submitUpload() {
-      if (this.fileList) {
-        this.$refs.upload.submit()
-        // this.$message({
-        //   message: '已上传成功，正在为您扫描，请稍等！',
-        //   type: 'success'
-        // })
-      }
-    },
+    async uploadFile(param) {
+      // 开始上传 生成等待画面
+      const load = this.$loading({
+        lock: true,
+        text: '已上传成功，正在为您扫描，预计需等待 2-3 分钟！',
+        spinner: 'el-icon-loading',
+        background: 'rgba(0, 0, 0, 0.7)'
+      })
 
-    handleAvatarSuccess(response, file, fileList) {
-      this.load.close()
-      // 把上传后的返回值存入list
+      const file = param.file
+      const form = new FormData()
+      // 文件对象
+      form.append('file', file)
+
+      // 发送异步请求
+      const { data: response } = await this.$http.post(
+        'http://182.254.200.15:8081/upload',
+        form
+      )
+
+      // 收到请求  进行下一步处理
+      load.close()
+
+      // 判断请求是否成功
       if (response.errno === 0) {
         sessionStorage.setItem('responseData', JSON.stringify(response.data))
         this.$store.state.scanResult = response.data
@@ -59,13 +75,10 @@ export default {
         })
       }
     },
-    loading() {
-      this.load = this.$loading({
-        lock: true,
-        text: '已上传成功，正在为您扫描，请稍等！',
-        spinner: 'el-icon-loading',
-        background: 'rgba(0, 0, 0, 0.7)'
-      })
+    submitUpload() {
+      if (this.fileList) {
+        this.$refs.upload.submit()
+      }
     }
   }
 }
