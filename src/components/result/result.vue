@@ -58,7 +58,7 @@
                     共
                     <span
                       class="num"
-                      :style="securList.length>0 && `color: red`"
+                      :style="checkMessage.license_detail.length>0 && `color: red`"
                     >{{checkMessage.license_detail.length}}</span>条
                   </span>
                 </span>
@@ -66,7 +66,7 @@
 
               <el-alert
                 v-if="checkMessage.license_detail.length == 0"
-                type="success'"
+                type="info'"
                 :closable="false"
               >您的项目没有任何证书问题！</el-alert>
               <div v-else v-for="(item, index) in checkMessage.license_detail" :key="index">
@@ -88,7 +88,7 @@
                 </span>
               </div>
 
-              <el-alert v-if="securList.length == 0" type="success" :closable="false">您的项目没有任何漏洞！</el-alert>
+              <el-alert v-if="securList.length == 0" type="info" :closable="false">您的项目没有任何漏洞！</el-alert>
               <div v-else v-for="(item, index) in securList" :key="index">
                 <el-alert
                   type="error"
@@ -109,7 +109,7 @@
               <el-badge value="HOT">
                 <el-button size="mini">推荐版本</el-button>
               </el-badge>
-              <el-button size="mini" type="success" plain>更高版本</el-button>
+              <el-button size="mini" type="primary" plain>更高版本</el-button>
               <el-button size="mini" type="warning" plain>更低版本</el-button>
             </div>
             <el-table :data="dependenciesList" @row-click="openDetails" stripe>
@@ -137,7 +137,7 @@
                   <span v-if="scope.row.stable_version>=scope.row.version">
                     <el-button
                       size="small"
-                      type="success"
+                      type="primary"
                       plain
                       style="width:120px"
                     >{{ scope.row.stable_version }}</el-button>
@@ -260,7 +260,6 @@ export default {
       if (response.errno === 0) {
         sessionStorage.setItem('responseData', JSON.stringify(response.data))
         this.$store.state.scanResult = response.data
-
         // 更新渲染数据
       } else {
         this.$message({
@@ -274,6 +273,7 @@ export default {
         }, 1000)
       }
       this.fetchData()
+      this.scanSecur()
     },
     submitUpload() {
       if (this.fileList) {
@@ -368,7 +368,7 @@ export default {
             .num {
               display: inline;
               font-size: 30px;
-              color: #27ae60;
+              color: #409eff;
               font-weight: bolder;
               margin: 0 10px;
             }
@@ -381,9 +381,15 @@ export default {
             justify-content: flex-end;
             align-items: center;
             margin-bottom: 20px;
-            .el-badge {
-              margin-right: 40px;
+            .el-button {
+              margin: 0 5px;
             }
+            .el-badge {
+              margin-right: 45px;
+            }
+          }
+          .el-button {
+            margin: 0;
           }
         }
       }

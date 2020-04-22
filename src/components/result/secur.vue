@@ -32,12 +32,13 @@
             </div>
             <el-table ref="filterTable" :data="item.slice(0,item.length-1)" style="width: 100%" fit>
               <el-table-column label="序号" type="index" align="center"></el-table-column>
+              <el-table-column prop="ecosystem" label="Ecosystem" align="center"></el-table-column>
+
               <el-table-column prop="cve_id" label="Cve ID" align="center">
                 <template scope="scope">
                   <a :href="scope.row.cve_url">{{ scope.row.cve_id }}</a>
                 </template>
               </el-table-column>
-              <el-table-column prop="ecosystem" label="Ecosystem" align="center"></el-table-column>
               <el-table-column prop="ghsa_id" label="Ghsa ID" align="center" show-overflow-tooltip>
                 <template scope="scope">
                   <a :href="scope.row.ghsa_url">{{ scope.row.ghsa_id }}</a>
@@ -54,14 +55,14 @@
                 </template>
               </el-table-column>
               <el-table-column
-                prop="firstPatchedVersion"
-                label="First Patched "
-                show-overflow-tooltip
+                prop="vulnerableVersionRange"
+                label="Vulnerable V Range"
                 align="center"
               ></el-table-column>
               <el-table-column
-                prop="vulnerableVersionRange"
-                label="Vulnerable V Range"
+                prop="firstPatchedVersion"
+                label="First Patched "
+                show-overflow-tooltip
                 align="center"
               ></el-table-column>
             </el-table>

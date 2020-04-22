@@ -28,7 +28,13 @@
           <el-table-column prop="child_groupid" label="Child Groupid" align="center"></el-table-column>
           <el-table-column prop="url" label="下载组件" align="center">
             <template scope="scope">
-              <el-button size="small" type="success" plain @click="downLoadDependency(scope.row)">下载</el-button>
+              <el-button
+                size="mini"
+                type="primary"
+                plain
+                @click="downLoadDependency(scope.row)"
+                style="margin:0"
+              >下载</el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -96,7 +102,6 @@ export default {
       for (const item in res.data.list) {
         this.detailList = this.detailList.concat(res.data.list[item])
       }
-      console.log(this.detailList)
     },
     // 用户点击具体的组件   跳转到MavenRepository
     downLoadDependency(row) {
